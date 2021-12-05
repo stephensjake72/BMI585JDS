@@ -1,3 +1,4 @@
 twoSidedT = function(t, n){
-  return(n)
+  area = 2*(1 - pt(abs(t), df))
+  return(area)
 }
