@@ -1,6 +1,4 @@
-bhAdjust = function(p){
-  # set alpha
-  alpha = .05
+bhAdjust = function(p, alpha){
   # make rank vector
   rank = order(p)
   # number of tests
