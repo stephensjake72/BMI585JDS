@@ -1,0 +1,54 @@
+---
+title: "workspace"
+author: "JDS"
+date: "December 8, 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+set.shift = read.csv("https://jlucasmckay.bmi.emory.edu/global/bmi585/set-shifting.csv")
+```
+
+```{r}
+M = set.shift[, c(2, 5)]
+
+scale.fn = function(mat){
+  # first save column means and standard deviations before scaling
+  mu = apply(mat, 2, mean)
+  s = apply(mat, 2, sd)
+  
+  mat = apply(mat, 2, FUN = function(x){x - mean(x)}) # center
+  mat = apply(mat, 2, FUN = function(x){x/sqrt(var(x))}) # scale
+  
+  # save unscaled means and standard deviations as attributes to the scaled matrix
+  attr(mat, "col.means") <- mu
+  attr(mat, "col.sds") <- s
+  return(mat)
+}
+
+unscale = function(mat){
+  # load column means and st. devs from original unscaled matrix
+  mu = attributes(mat)$col.means
+  sd = attributes(mat)$col.sds
+  
+  # unscale
+  # apply st. dev. scaling row-wise so dimensions match
+  mat = apply(mat, 1, FUN = function(x){x*sd})
+  # mat is now a matrix with variables as rows, so apply mean scaling column-wise
+  mat = apply(mat, 2, FUN = function(x){x + mu})
+  
+  # transpose mat to revert back to column variables
+  mat = t(mat)
+  
+  return(mat)
+}
+
+Msc = scale.fn(M)
+Munsc = unscale(Msc)
+
+ggplot(data = NULL, aes(M[, 1], M[, 2])) + geom_point()
+ggplot(data = NULL, aes(Msc[, 1], Msc[, 2])) + geom_point()
+ggplot(data = NULL, aes(Munsc[, 1], Munsc[, 2])) + geom_point()
+```
