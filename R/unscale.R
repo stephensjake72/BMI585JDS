@@ -1,16 +1,10 @@
 unscale = function(mat){
   # load column means and st. devs from original unscaled matrix
-  mu = attributes(mat)$col.means
-  sd = attributes(mat)$col.sds
+  mu = attributes(mat)$'scaled:center'
+  sd = attributes(mat)$'scaled:scale'
   
-  # unscale
-  # apply st. dev. scaling row-wise so dimensions match
-  mat = apply(mat, 1, FUN = function(x){x*sd})
-  # mat is now a matrix with variables as rows, so apply mean scaling column-wise
-  mat = apply(mat, 2, FUN = function(x){x + mu})
+  # multiply by st. devs and add means
+  mat2 = t(t(mat)*sd + mu)
   
-  # transpose mat to revert back to column variables
-  mat = t(mat)
-  
-  return(mat)
+  return(mat2)
 }

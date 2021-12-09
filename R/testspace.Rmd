@@ -8,6 +8,10 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(dplyr)
+library(janitor)
+```
+```{r}
 set.shift = read.csv("https://jlucasmckay.bmi.emory.edu/global/bmi585/set-shifting.csv")
 ```
 
@@ -52,3 +56,169 @@ ggplot(data = NULL, aes(M[, 1], M[, 2])) + geom_point()
 ggplot(data = NULL, aes(Msc[, 1], Msc[, 2])) + geom_point()
 ggplot(data = NULL, aes(Munsc[, 1], Munsc[, 2])) + geom_point()
 ```
+
+
+```{r}
+pred = c(T, F, T, F, T, F)
+truth = c(T, T, F, F, F, F)
+sensitivity(pred, truth)
+specificity(pred, truth)
+accuracy(pred, truth)
+ppv(pred, truth)
+f1(pred, truth)
+```
+
+```{r}
+plot(boxMuller(1000))
+```
+
+```{r}
+twoSidedT(.3, 100000)
+twoSidedZ(.3)
+```
+
+```{r}
+x = seq(0, 10, .5)
+g = rep(c("A", "B"), each = 5)
+effectSize(x, g)
+```
+
+```{r}
+a = sample(x, 15)
+b = sample(x, 15)
+welchT(a, b)
+```
+
+```{r}
+minimumN(.8)
+```
+
+```{r}
+contingency = data.frame(row.names = c("Success", "Failure"),
+                         Group1 = c(21, 3),
+                         Group2 = c(14, 10))
+
+chiSquareCounts(contingency)
+```
+
+```{r}
+postHocPower(1, 10, 10)
+```
+
+```{r}
+p = seq(.0025, .025, .0025)
+bhAdjust(p, .05)
+fdrAdjust(p, .05)
+```
+
+```{r}
+data("mtcars")
+mdl = lm(mpg ~ cyl, data = mtcars)
+yhat = mtcars$cyl*summary(mdl)$coefficients[2] + summary(mdl)$coefficients[1]
+
+ggplot(mtcars, aes(cyl, mpg)) + 
+  geom_point() +
+  geom_line(data = NULL, aes(cyl, yhat))
+
+r2(yhat, mtcars$mpg)
+adjR2(yhat, mtcars$mpg, 1)
+```
+
+
+```{r}
+pc = prcomp(mtcars, center = T, scale. = T)
+# pc$x %*% pc$rotation
+
+npc = 2
+px = pc$x[, 1:npc]
+pr = pc$rotation[1:npc, 1:npc]
+pcs = pc$scale[1:npc]
+pcc = pc$center[1:npc]
+
+Papprox = t(t(px %*% t(pr))*pcs + pcc)
+          
+plot(Papprox[, 1], Papprox[, 2])
+```
+
+```{r}
+X = scale(mtcars)
+Y = unscale(X)
+
+plot(mtcars[, 1], mtcars[, 2])
+plot(X[, 1], X[, 2])
+plot(Y[, 1], Y[, 2])
+```
+
+
+
+```{r}
+library(ggforce)
+library(ggpubr)
+library(gridExtra)
+data(mtcars)
+data(iris)
+dat = mtcars[1:10, 1:2]
+dat
+f = pcLollipop(dat)
+f
+```
+
+
+```{r}
+library(gridExtra)
+P = prcomp(dat)
+  loadings = P$x
+  npc = dim(loadings)
+  myplots = lapply(seq_len(ncol(loadings)), FUN = function(n){
+    Load = loadings[, n]
+    nL = 1:length(Load)
+    p = ggplot2::ggplot(data = NULL) +
+      # plot circles
+      ggforce::geom_circle(aes(x0 = nL,
+                               y0 = Load,
+                               r = .1, 
+                               color = rownames(loadings))) +
+      # plot lines
+      ggplot2::geom_segment(aes(x = nL,
+                                xend = nL,
+                                y = rep(0, length(nL)),
+                                yend = Load,
+                                color = rownames(loadings))) +
+      # labels
+      ggplot2::theme(axis.title.x = element_blank(),
+                     axis.text.x = element_blank(),
+                     axis.ticks.x = element_blank()) +
+      ggplot2::ylab("weight") +
+      ggplot2::labs(color = "Predictor", fill = rownames(loadings)) +
+      ggplot2::ggtitle(colnames(loadings)[n])
+    return(p)
+  })
+fig = do.call("ggarrange", 
+                c(grobs = myplots, 
+                  nrow = ncol(loadings), 
+                  common.legend = T, 
+                  legend = "right"))
+fig
+m = lapply(myplots, ggplotGrob)
+gg = rbind(unlist(m), size = "first")
+grid.draw(gg)
+library(grid)
+grid.arrange(grobs = myplots, size)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
