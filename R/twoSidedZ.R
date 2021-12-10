@@ -2,7 +2,7 @@
 #'
 #' twoSidedZ(z) takes a test-statistic 'z' and returns the area under the normal distribution >= |z|
 #'
-#' @param t a test-statistic
+#' @param z a test-statistic
 #' @return area
 #' @examples
 #' z = 4

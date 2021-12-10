@@ -7,7 +7,7 @@
 twoSidedZ(z)
 }
 \arguments{
-\item{t}{a test-statistic}
+\item{z}{a test-statistic}
 }
 \value{
 area

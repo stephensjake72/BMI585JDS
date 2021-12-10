@@ -6,8 +6,8 @@
 #' @return unscaled data
 #' @examples
 #' mat = mtcars
-#' scaledmat = scale(mat)
-#' unscaled mat = unscale(scaledmat)
+#' mat.scaled = scale(mat)
+#' mat.unscaled = unscale(mat.scaled)
 #'
 #' @export
 #' @rdname unscale

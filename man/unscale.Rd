@@ -17,7 +17,7 @@ unscale(mat) takes a scaled object input and rescales and recenters data to its 
 }
 \examples{
 mat = mtcars
-scaledmat = scale(mat)
-unscaled mat = unscale(scaledmat)
+mat.scaled = scale(mat)
+mat.unscaled = unscale(mat.scaled)
 
 }
