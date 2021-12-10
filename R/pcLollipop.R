@@ -1,9 +1,6 @@
 pcLollipop = function(x){
-  require(ggplot2)
-  require(ggforce)
-  require(gtable)
-  
-  P = prcomp(x)
+
+  P = stats::prcomp(x)
   loadings = P$x
   npc = dim(loadings)
   myplots = lapply(seq_len(ncol(loadings)), FUN = function(n){
@@ -11,10 +8,10 @@ pcLollipop = function(x){
     nL = 1:length(Load)
     p = ggplot2::ggplot(data = NULL) +
       # plot circles
-      ggforce::geom_circle(aes(x0 = nL,
-                               y0 = Load,
-                               r = .1, 
-                               color = rownames(loadings))) +
+      ggplot2::geom_point(aes(x = nL,
+                              y = Load,
+                              size = 1,
+                              color = rownames(loadings))) +
       # plot lines
       ggplot2::geom_segment(aes(x = nL,
                                 xend = nL,
@@ -30,12 +27,13 @@ pcLollipop = function(x){
       ggplot2::ggtitle(colnames(loadings)[n])
     return(p)
   })
-  fig = do.call("ggarrange", 
-                c(grobs = myplots, 
-                  nrow = ncol(loadings), 
-                  common.legend = T, 
-                  legend = "right",
-                  widths = 1,
-                  heights = 1))
+  fig = gridExtra::grid.arrange(grobs = myplots, )
+  # fig = do.call("ggarrange",
+  #               c(grobs = myplots,
+  #                 nrow = ncol(loadings),
+  #                 common.legend = T,
+  #                 legend = "right",
+  #                 widths = 1,
+  #                 heights = 1))
   return(fig)
 }
