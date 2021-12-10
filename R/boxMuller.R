@@ -1,3 +1,14 @@
+#' Box-Muller transform
+#'
+#' boxMuller(n) returns a data frame with columns x1 and x2, representing n pairs of independent, normally-distributed random numbers
+#'
+#' @param n number of desired pairs
+#' @return data frame with columns X1 and X2
+#' @examples
+#' boxMuller(500)
+#' @export
+#' @rdname boxMuller
+
 boxMuller = function(n){
   X1 = rep(0, n)
   X2 = rep(0, n)

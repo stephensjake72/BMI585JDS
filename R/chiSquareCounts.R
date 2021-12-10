@@ -1,3 +1,16 @@
+#' Chi-Square Counts
+#'
+#' chiSquareCounts(tib) returns a Chi-squared statistic for the 2x2 contingency table 'tib' by computing
+#' the error between the observed and expected counts
+#'
+#' @param tib a 2x2 tibble, data frame, or matrix of counts
+#' @return chi-square statistic
+#' @examples
+#' mydata = data.frame(row.names = c("Success", "Failure"), Group1 = c(21, 3), Group2 = c(14, 10))
+#' chisq = chiSquareCounts(mydata)
+#' @export
+#' @rdname chiSquareCounts
+
 chiSquareCounts = function(tib){
 
   # extract entries from contingency table

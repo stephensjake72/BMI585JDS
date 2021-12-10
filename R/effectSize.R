@@ -1,3 +1,20 @@
+#' Effect Size
+#'
+#' effectSize(x, g) takes the data vector 'x' and the group vector 'g' and returns the effect size between the two groups
+#'
+#' @param x a vector of observed data
+#' @param g a grouping vector
+#' @return effect size
+#' @examples
+#' groupa = rnorm(n = 50, mean = 0, sd = 1)
+#' groupb = rnorm(n = 50, mean = 2, sd = 1)
+#' x = c(groupa, groupb)
+#' g = rep(c("A", "B"), each = 50)
+#' effect.size = effectSize(x, g)
+#' @export
+#' @rdname effectSize
+#'
+
 effectSize = function(x, g){
   groups = unique(g)
   x1 = x[g == groups[1]]
