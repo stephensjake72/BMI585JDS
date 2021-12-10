@@ -28,8 +28,6 @@ pcLollipop = function(x){
       ggplot2::ylab("weight") +
       ggplot2::labs(color = "Predictor", fill = rownames(loadings)) +
       ggplot2::ggtitle(colnames(loadings)[n])
-    
-    g = ggplot2::ggplotGrob(p)
     return(p)
   })
   fig = do.call("ggarrange", 
